@@ -5,11 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.WristSubsystem;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -20,17 +16,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here. Loqanz
- * //vote crab 2023
- * //exbox
+ *
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final WristSubsystem m_WristSubsystem = new WristSubsystem();
 
-
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  // Declare and initialize Xbox controller
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
@@ -40,9 +32,11 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
+    // Default command for WristSubsystem
     m_WristSubsystem.setDefaultCommand(
       Commands.run(
-      () -> m_WristSubsystem.WristTurnMethod(m_driverController.getLeftY()), m_WristSubsystem));
+      () ->
+      m_WristSubsystem.WristTurnMethod(m_driverController.getLeftY()), m_WristSubsystem));
   }
 
   /**
@@ -55,12 +49,19 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    //m_driverController.y().OnTrue(Commands.runOnce (
-      //() -> {
-        //m_WristSubsystem.WristTurnMethod(m_driverController.getLeftY());
-      //},m_WristSubsystem));
-
-    //m_driverController.a().whileTrue(m_WristSubsystem.wristTurnCommand(m_driverController.getLeftY()));
+    // Button controls for WristSubsystem
+    m_driverController.a().onTrue(
+      Commands.run(() -> m_WristSubsystem.WristToAngleMethod(0.0), m_WristSubsystem).withTimeout(1)
+    );
+    m_driverController.b().onTrue(
+      Commands.run(() -> m_WristSubsystem.WristToAngleMethod(90.0), m_WristSubsystem).withTimeout(1)
+    );
+    m_driverController.y().onTrue(
+      Commands.run(() -> m_WristSubsystem.WristToAngleMethod(180.0), m_WristSubsystem).withTimeout(1)
+    );
+    m_driverController.x().onTrue(
+      Commands.run(() -> m_WristSubsystem.WristToAngleMethod(270.0), m_WristSubsystem).withTimeout(1)
+    );
   }
 
   /**
@@ -68,8 +69,9 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  /*
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
   }
+  */
 }

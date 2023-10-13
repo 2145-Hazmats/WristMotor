@@ -17,11 +17,7 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static class WristConstants {
-    public static double PulsesToAngle = 8.108108108;
+    public static final double PulsesToAngle = 8.108108108; // For converting pulses to angle
+    public static final double WristSpeed = 0.20; // Speed multiplier
   }
 }
-
-
-// Pulses: 180
-//Distance: 45
-// Distance * PulsesToAngle = angle
